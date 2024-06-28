@@ -50,10 +50,23 @@ router.put('/basketitem/increase/:id', async (req, res) => {
     }
 });
 
+router.put('/basketitem/decrease/:id', async (req, res) => {
+    try {
+        const basketItemId = req.params.id;
+        const basketItem = await basketService.decreaseItemCount(basketItemId);
+        res.json(basketItem);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 // Handle DELETE request to delete a product by ID
 router.delete('/basketitem/:id', async (req, res) => {
     try {
+
         const basketItemId = req.params.id;
+        console.log(basketItemId);
         const basketItem = await basketService.deleteBasketItem(basketItemId);
         res.json(basketItem);
     } catch (err) {
@@ -61,5 +74,6 @@ router.delete('/basketitem/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
 
 module.exports = router;

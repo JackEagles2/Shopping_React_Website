@@ -61,7 +61,7 @@ const ProductDialog: React.FC<ProductDialogProps> = ({ product, isOpen, onClose,
             <DialogTitle>{product.name}</DialogTitle>
             <DialogContent dividers>
                 <Typography className='mini-image-container'>
-                    <img src={product.image} alt={product.name} className="mini-image" />
+                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%' }}/>
                 </Typography>
                 <Typography gutterBottom>
                     {product.description}

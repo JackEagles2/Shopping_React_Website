@@ -24,8 +24,7 @@ const createBasketItem = async (basketItemData) => {
 // Retrieve all basket items
 const getBasketItems = async () => {
     try {
-        const basketItems = await BasketItem.find().populate('product');
-        return basketItems;
+        return await BasketItem.find().populate('product');
     } catch (error) {
         console.error('Error fetching basket items:', error);
         throw error;
@@ -35,8 +34,7 @@ const getBasketItems = async () => {
 // Update a basket item by ID
 const updateBasketItem = async (basketItemId, updateData) => {
     try {
-        const basketItem = await BasketItem.findByIdAndUpdate(basketItemId, updateData, { new: true });
-        return basketItem;
+        return await BasketItem.findByIdAndUpdate(basketItemId, updateData, {new: true});
     } catch (error) {
         console.error('Error updating basket item:', error);
         throw error;
@@ -47,12 +45,14 @@ const updateBasketItem = async (basketItemId, updateData) => {
 const deleteBasketItem = async (basketItemId) => {
     try {
         const basketItem = await BasketItem.findByIdAndDelete(basketItemId);
+        console.log("Deleted basket item:", basketItem);
         return basketItem;
     } catch (error) {
         console.error('Error deleting basket item:', error);
         throw error;
     }
 };
+
 
 const increaseItemCount = async (id) => {
     const basketItem = await BasketItem.findById(id);
@@ -64,7 +64,18 @@ const increaseItemCount = async (id) => {
     return basketItem;
 };
 
+const decreaseItemCount = async (id) => {
+    const basketItem = await BasketItem.findById(id);
+    if (!basketItem) {
+        throw new Error('Basket item not found' + id);
+    }
+    basketItem.count -= 1;
+    await basketItem.save();
+    return basketItem;
+};
+
 module.exports = {
+    decreaseItemCount,
     increaseItemCount,
     createBasketItem,
     getBasketItems,
